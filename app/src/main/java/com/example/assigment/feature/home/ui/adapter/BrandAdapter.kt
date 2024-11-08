@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.assigment.databinding.NameCartBinding
-import com.example.assigment.feature.home.data.model.dto.Category
 import com.example.assigment.feature.home.domain.model.Brand
 
-class BrandAdapter : RecyclerView.Adapter<BrandAdapter.ViewHolder>() {
+class BrandAdapter(val brandClick: () -> Unit) : RecyclerView.Adapter<BrandAdapter.ViewHolder>() {
 
     private var items: List<Brand> = emptyList()
 
@@ -30,6 +29,10 @@ class BrandAdapter : RecyclerView.Adapter<BrandAdapter.ViewHolder>() {
             Glide.with(holder.itemView.context)
                 .load(items[position].image)
                 .into(holder.binding.ivImage)
+            ivImage.setOnClickListener{
+                brandClick()
+
+            }
         }
         holder.binding.executePendingBindings()
     }

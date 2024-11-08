@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.assigment.databinding.NameCartBinding
 import com.example.assigment.feature.home.data.model.dto.Category
 
-class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(val brandClick: () -> Unit) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private var items: List<Category> = emptyList()
 
@@ -24,6 +24,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
+            llCart.setOnClickListener { brandClick() }
             tvName.text = items[position].name
             // Load image using Glide or Picasso
             Glide.with(holder.itemView.context)

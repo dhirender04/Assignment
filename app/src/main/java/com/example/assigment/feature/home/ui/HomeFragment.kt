@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assigment.R
 import com.example.assigment.databinding.FragmentHomeBinding
@@ -21,11 +22,28 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel by viewModels<HomeViewModel>()
-    private val binding:FragmentHomeBinding by lazy { DataBindingUtil.inflate(layoutInflater, R.layout.fragment_home,null,false) }
+    private val binding: FragmentHomeBinding by lazy {
+        DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_home,
+            null,
+            false
+        )
+    }
 
-    val categoryAdapter by lazy { CategoryAdapter() }
-    val brandAdapter by lazy { BrandAdapter() }
-    val groceryAdapter by lazy { GroceryAdapter() }
+    val brandClick = {
+        findNavController().navigate(R.id.action_homeFragment_to_productFragment)
+    }
+    val categotyClick = {
+        findNavController().navigate(R.id.action_homeFragment_to_productFragment)
+    }
+    val groceryClick = {
+        findNavController().navigate(R.id.action_homeFragment_to_productFragment)
+    }
+
+    val categoryAdapter by lazy { CategoryAdapter(categotyClick) }
+    val brandAdapter by lazy { BrandAdapter(brandClick) }
+    val groceryAdapter by lazy { GroceryAdapter(groceryClick) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,31 +60,34 @@ class HomeFragment : Fragment() {
             brandAdapter.submitList(it)
             Log.e("onViewCreated: ", it.toString())
         }
-        viewModel.getSlider().observe(viewLifecycleOwner){
-           val adapter =  ViewPagerAdapter(imageUrls = it)
-           binding.viewPager.adapter = adapter
-            Log.e( "onViewCreated:Silder ",it.toString() )
+        viewModel.getSlider().observe(viewLifecycleOwner) {
+            val adapter = ViewPagerAdapter(imageUrls = it)
+            binding.viewPager.adapter = adapter
+            Log.e("onViewCreated:Silder ", it.toString())
         }
-        viewModel.getCategory().observe(viewLifecycleOwner){
+        viewModel.getCategory().observe(viewLifecycleOwner) {
             categoryAdapter.submitList(it)
-            Log.e( "onViewCreated:Category ",it.toString() )
+            Log.e("onViewCreated:Category ", it.toString())
         }
-        viewModel.getGrocery().observe(viewLifecycleOwner){
+        viewModel.getGrocery().observe(viewLifecycleOwner) {
             groceryAdapter.submitList(it)
-            Log.e( "onViewCreated:Grocery ",it.toString() )
+            Log.e("onViewCreated:Grocery ", it.toString())
         }
     }
 
-    fun adapter(){
-        binding .apply {
+    fun adapter() {
+        binding.apply {
             rvCategory.adapter = categoryAdapter
-            rvCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            rvCategory.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
             rvBrand.adapter = brandAdapter
-            rvBrand.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            rvBrand.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
             rvGrocery.adapter = groceryAdapter
-            rvGrocery.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            rvGrocery.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
     }

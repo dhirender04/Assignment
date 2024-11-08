@@ -84,4 +84,4 @@ dependencies {
     //Glide
     implementation(libs.glide)
     kapt(libs.compiler)
-}
+ }

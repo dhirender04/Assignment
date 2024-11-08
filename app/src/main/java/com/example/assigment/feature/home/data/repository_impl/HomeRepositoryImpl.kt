@@ -50,7 +50,9 @@ class HomeRepositoryImpl(
     }
     fun getCategoryData():LiveData<List<Category>>{
         return categoryDao.getAllCategories().map {
-            it.map { item->item.toCategory() }
+            it.map {
+                item->
+                item.toCategory() }
         }
     }
     fun getGroceryData():LiveData<List<GroceryItemDto>>{

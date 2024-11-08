@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.assigment.databinding.NameCartBinding
-import com.example.assigment.feature.home.data.model.dto.Category
 import com.example.assigment.feature.home.data.model.dto.GroceryItemDto
 
-class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.ViewHolder>() {
+class GroceryAdapter(val groceryClick: () -> Unit) : RecyclerView.Adapter<GroceryAdapter.ViewHolder>() {
 
     private var items: List<GroceryItemDto> = emptyList()
 
@@ -25,6 +24,9 @@ class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
+            llCart.setOnClickListener {
+                groceryClick()
+            }
             tvName.text = items[position].name
             // Load image using Glide or Picasso
             Glide.with(holder.itemView.context)
